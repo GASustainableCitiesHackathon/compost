@@ -1,7 +1,9 @@
 'use strict'
 
 // creating a base name for the mongodb
-const mongooseBaseName = 'express-api-template'
+const mongooseBaseName = 'GA_hackathon_2021'
+console.log('db is: ', process.env.DB_URI)
+// const DB_URI = 'mongodb+srv://dbAdmin:compost123@nyc-compost-sites.fmdip.mongodb.net/GA_hackathon_2021?retryWrites=true&w=majority'
 
 // create the mongodb uri for development and test
 const database = {
