@@ -18,9 +18,3 @@ const locations = [
 ]
 
 module.exports = { locations }
-
-// ValidationError: 
-// Location validation failed: 
-// point: Cast to [string] failed for value 
-// "[{"type":"Point","coordinates":[-73.9187,40.809599]}]" at path "point", 
-
