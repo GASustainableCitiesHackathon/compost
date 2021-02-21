@@ -1,4 +1,5 @@
 // load fresh locations from api (insert api call here) to clean data
+// https://data.cityofnewyork.us/resource/if26-z6xq.json
 
 const locations = [
   {

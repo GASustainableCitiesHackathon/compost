@@ -29,18 +29,33 @@ const router = express.Router();
 
 // INDEX
 // GET /locations
-router.get("/locations", (req, res, next) => {
-  Location.find()
-    .then((locations) => {
-      // `locations` will be an array of Mongoose documents
-      // we want to convert each one to a POJO, so we use `.map` to
-      // apply `.toObject` to each one
-      return locations.map((location) => location.toObject());
-    })
-    // respond with status 200 and JSON of the locations
-    .then((locations) => res.status(200).json({ locations: locations }))
-    // if an error occurs, pass it to the handler
-    .catch(next);
+router.get("/locations/:id", (req, res, next) => {
+  console.log("borough", req.params.id);
+  if (req.params.id === "All") {
+    Location.find()
+      .then((locations) => {
+        // `locations` will be an array of Mongoose documents
+        // we want to convert each one to a POJO, so we use `.map` to
+        // apply `.toObject` to each one
+        return locations.map((location) => location.toObject());
+      })
+      // respond with status 200 and JSON of the locations
+      .then((locations) => res.status(200).json({ locations: locations }))
+      // if an error occurs, pass it to the handler
+      .catch(next);
+  } else {
+    Location.find({ borough: req.params.id })
+      .then((locations) => {
+        // `locations` will be an array of Mongoose documents
+        // we want to convert each one to a POJO, so we use `.map` to
+        // apply `.toObject` to each one
+        return locations.map((location) => location.toObject());
+      })
+      // respond with status 200 and JSON of the locations
+      .then((locations) => res.status(200).json({ locations: locations }))
+      // if an error occurs, pass it to the handler
+      .catch(next);
+  }
 });
 
 // SHOW
