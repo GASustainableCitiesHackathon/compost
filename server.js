@@ -1,10 +1,10 @@
 // require necessary NPM packages
+require('dotenv').config()
 const express = require('express')
-const mongoose = require('mongoose')
 const cors = require('cors')
 
 // require route files
-const exampleRoutes = require('./app/routes/example_routes')
+const locationRoutes = require('./app/routes/location_routes')
 const userRoutes = require('./app/routes/user_routes')
 
 // require middleware
@@ -12,8 +12,8 @@ const errorHandler = require('./lib/error_handler')
 const requestLogger = require('./lib/request_logger')
 
 // require database configuration logic
-// `db` will be the actual Mongo URI as a string
-const db = require('./config/db')
+// `mongoose` will be the actual Mongo URI as a string
+require('./config/db')
 
 // require configured passport authentication middleware
 const auth = require('./lib/auth')
@@ -23,14 +23,7 @@ const auth = require('./lib/auth')
 const serverDevPort = 4741
 const clientDevPort = 3000
 
-// establish database connection
-// use new version of URL parser
-// use createIndex instead of deprecated ensureIndex
-mongoose.connect(db, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology: true
-})
+
 
 // instantiate express application object
 const app = express()
@@ -56,7 +49,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(requestLogger)
 
 // register route files
-app.use(exampleRoutes)
+app.use(locationRoutes)
 app.use(userRoutes)
 
 // register error handling middleware
