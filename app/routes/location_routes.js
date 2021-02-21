@@ -30,7 +30,6 @@ const router = express.Router();
 // INDEX
 // GET /locations
 router.get("/locations/:id", (req, res, next) => {
-  console.log("borough", req.params.id);
   if (req.params.id === "All") {
     Location.find()
       .then((locations) => {
