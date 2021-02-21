@@ -1,4 +1,5 @@
 const mongoose = require("../../config/db");
+const weightSchema = require("./weight");
 
 const location = new mongoose.Schema(
   {
@@ -9,7 +10,7 @@ const location = new mongoose.Schema(
     hours_to: { type: String },
     latitude: { type: Number },
     location: { type: String },
-    longitude: { type: String },
+    longitude: { type: Number },
     ntaname: { type: String },
     operation_day: { type: String },
     open_months: { type: String },
@@ -19,6 +20,7 @@ const location = new mongoose.Schema(
     zip_code: { type: Number },
     website: { type: String },
     notes: { type: String },
+    weights: [weightSchema],
   },
   {
     timestamps: true,
