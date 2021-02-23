@@ -1,3 +1,4 @@
+  
 // Express docs: http://expressjs.com/en/api.html
 const express = require("express");
 // Passport docs: http://www.passportjs.org/docs/
@@ -57,70 +58,30 @@ router.get("/locations/:id", (req, res, next) => {
   }
 });
 
-// SHOW
-// GET /locations/5a7db6c74d55bc51bdf39793
-router.get("/locations/:id", (req, res, next) => {
-  // req.params.id will be set based on the `:id` in the route
-  Location.findById(req.params.id)
-    .then(handle404)
-    // if `findById` is succesful, respond with 200 and "location" JSON
-    .then((location) => res.status(200).json({ location: location.toObject() }))
-    // if an error occurs, pass it to the handler
-    .catch(next);
-});
-
-// CREATE
-// POST /locations
-router.post("/locations", requireToken, (req, res, next) => {
-  // set owner of new location to be current user
-  req.body.location.owner = req.user.id;
-
-  Location.create(req.body.location)
-    // respond to succesful `create` with status 201 and JSON of new "location"
-    .then((location) => {
-      res.status(201).json({ location: location.toObject() });
-    })
-    // if an error occurs, pass it off to our error handler
-    // the error handler needs the error message and the `res` object so that it
-    // can send an error message back to the client
-    .catch(next);
-});
-
 // UPDATE
 // PATCH /locations/5a7db6c74d55bc51bdf39793
-router.patch("/locations/:id", requireToken, removeBlanks, (req, res, next) => {
+router.patch("/locations/:id", removeBlanks, (req, res, next) => {
   // if the client attempts to change the `owner` property by including a new
   // owner, prevent that by deleting that key/value pair
-  delete req.body.location.owner;
+  //   delete req.body.location.owner;
+  console.log("in the patch!! ", req.body, req.params);
 
   Location.findById(req.params.id)
     .then(handle404)
     .then((location) => {
+      console.log(location);
       // pass the `req` object and the Mongoose record to `requireOwnership`
       // it will throw an error if the current user isn't the owner
-      requireOwnership(req, location);
+      //   requireOwnership(req, location);
+      location.weights.push({
+        weightLbs: req.body.weight,
+        enteredBy: req.body.user.email,
+      });
+      return location.save();
 
       // pass the result of Mongoose's `.update` to the next `.then`
-      return location.updateOne(req.body.location);
     })
     // if that succeeded, return 204 and no JSON
-    .then(() => res.sendStatus(204))
-    // if an error occurs, pass it to the handler
-    .catch(next);
-});
-
-// DESTROY
-// DELETE /locations/5a7db6c74d55bc51bdf39793
-router.delete("/locations/:id", requireToken, (req, res, next) => {
-  Location.findById(req.params.id)
-    .then(handle404)
-    .then((location) => {
-      // throw an error if current user doesn't own `location`
-      requireOwnership(req, location);
-      // delete the location ONLY IF the above didn't throw
-      location.deleteOne();
-    })
-    // send back 204 and no content if the deletion succeeded
     .then(() => res.sendStatus(204))
     // if an error occurs, pass it to the handler
     .catch(next);

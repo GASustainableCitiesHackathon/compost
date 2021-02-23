@@ -23,8 +23,6 @@ const auth = require('./lib/auth')
 const serverDevPort = 4741
 const clientDevPort = 3000
 
-
-
 // instantiate express application object
 const app = express()
 
