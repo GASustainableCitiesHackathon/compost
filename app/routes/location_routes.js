@@ -64,12 +64,9 @@ router.patch("/locations/:id", removeBlanks, (req, res, next) => {
   // if the client attempts to change the `owner` property by including a new
   // owner, prevent that by deleting that key/value pair
   //   delete req.body.location.owner;
-  console.log("in the patch!! ", req.body, req.params);
-
   Location.findById(req.params.id)
     .then(handle404)
     .then((location) => {
-      console.log(location);
       // pass the `req` object and the Mongoose record to `requireOwnership`
       // it will throw an error if the current user isn't the owner
       //   requireOwnership(req, location);
